@@ -117,6 +117,7 @@ class Feed extends Component {
               content
               imageUrl
               creator {
+                _id
                 name
               }
               createdAt
@@ -141,7 +142,6 @@ class Feed extends Component {
         return res.json();
       })
       .then(resData => {
-        console.log(resData)
         if (resData.errors && resData.errors[0].status === 422) {
           throw new Error(
             'bla bla'
@@ -152,6 +152,7 @@ class Feed extends Component {
             'Fetching Post failed'
           );
         }
+        console.log(resData);
         this.setState({
           posts: resData.data.posts.posts.map(post => {
             return {
@@ -224,7 +225,6 @@ class Feed extends Component {
     });
     const formData =  new FormData();
     formData.append('image', postData.image);
-    console.log(formData.image);
     if (this.state.editPost) {
       formData.append('oldPath', this.state.editPost.imagePath);
     }
@@ -263,7 +263,6 @@ class Feed extends Component {
         }
       };
       if (this.state.editPost) {
-        console.log(this.state.editPost._id)
         graphqlQuery = {
           query: `
             mutation EditUserPost($id: ID!, $title: String!, $content: String!, $imageUrl: String!){
@@ -464,9 +463,10 @@ class Feed extends Component {
                   key={post._id}
                   id={post._id}
                   author={post.creator.name}
+                  authorId={post.creator._id}
                   date={new Date(post.createdAt).toLocaleDateString('en-US')}
                   title={post.title}
-                  image={post.imageUrl}
+                  image={'https://node-message.herokuapp.com/'+ post.imageUrl}
                   content={post.content}
                   onStartEdit={this.startEditPostHandler.bind(this, post._id)}
                   onDelete={this.deletePostHandler.bind(this, post._id)}
