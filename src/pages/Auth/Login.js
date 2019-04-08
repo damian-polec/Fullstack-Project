@@ -62,6 +62,19 @@ class Login extends Component {
       };
     });
   };
+  
+  onTest = () => {
+    this.setState({
+      loginForm: {
+        email: {
+          value: 'test@test.pl'
+        },
+        password: {
+          value:'asdfgh'
+        }
+      }
+    })
+  }
 
   render() {
     return (
@@ -98,6 +111,9 @@ class Login extends Component {
           />
           <Button design="raised" type="submit" loading={this.props.loading}>
             Login
+          </Button>
+          <Button design="raised" type='button' onClick={this.onTest.bind(this)} loading={this.props.loading}>
+            Test
           </Button>
         </form>
       </Auth>
